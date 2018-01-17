@@ -3,7 +3,6 @@ FROM sebp/elk
 # overwrite existing file
 ADD 10-syslog.conf /etc/logstash/conf.d/10-syslog.conf
 ADD 30-output.conf /etc/logstash/conf.d/30-output.conf
-#ADD logstash.yml ${LOGSTASH_HOME}/config/logstash.yml
 
 # add new file
 ADD 12-syslog-input.conf /etc/logstash/conf.d/12-syslog-input.conf

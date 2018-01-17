@@ -111,6 +111,7 @@
 modules:
   - name: netflow
     var.input.udp.port: 9996
+    var.elasticsearch.hosts: "localhost"
 #
 # ------------ Cloud Settings ---------------
 # Define Elastic Cloud settings here.

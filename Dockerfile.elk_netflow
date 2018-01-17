@@ -1,0 +1,19 @@
+FROM sebp/elk
+
+# get rid of any logstash pipeline configurations
+RUN rm -f /etc/logstash/conf.d/*
+# replace the default init script /etc/init.d/logstash with custom one (ommited --config-path args)
+ADD logstash.init /etc/init.d/logstash
+RUN chmod 755 /etc/init.d/logstash
+# replace default logstash.yml with one with netflow module added
+ADD logstash.yml ${LOGSTASH_HOME}/config/logstash.yml
+# configure elasticsearch to act as a slave node
+ADD elasticsearch-slave.yml /etc/elasticsearch/elasticsearch.yml
+
+WORKDIR ${LOGSTASH_HOME}
+
+ENV http_proxy="http://10.2.1.96:8118"
+ENV https_proxy=$http_proxy
+ENV JRUBY_OPTS="-J-Dhttp.proxyHost=10.2.1.96 -J-Dhttp.proxyPort=8118"
+
+RUN gosu logstash bin/logstash-plugin install logstash-filter-geoip
